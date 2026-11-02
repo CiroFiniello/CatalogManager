@@ -1,0 +1,120 @@
+@model IEnumerable<CatalogManager.Models.Category>
+
+@{
+    ViewData["Title"] = "Categorie";
+    var categories = Model.OrderBy(c => c.Name).ToList();
+}
+
+<section class="cm-page-heading cm-page-heading-actions">
+    <div>
+        <span class="cm-eyebrow">CATALOGO / CATEGORIE</span>
+        <h1>Categorie</h1>
+        <p>Organizza le famiglie di prodotti utilizzate nel catalogo aziendale.</p>
+    </div>
+    <a asp-action="Create" class="btn cm-btn-primary">+ Nuova categoria</a>
+</section>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+        <div class="cm-stat">
+            <span class="cm-stat-label">Categorie registrate</span>
+            <strong>@categories.Count</strong>
+            <small>Totale attualmente presente nel database</small>
+        </div>
+    </div>
+    <div class="col-12 col-md-8">
+        <div class="cm-stat cm-stat-note">
+            <span class="cm-stat-label">Come vengono utilizzate?</span>
+            <p>Ogni prodotto avrà una categoria. Una categoria potrà raggruppare più prodotti.</p>
+        </div>
+    </div>
+</div>
+
+<section class="cm-panel">
+    <div class="cm-list-header">
+        <div>
+            <h2>Elenco categorie</h2>
+            <p>Visualizza, modifica o elimina una categoria.</p>
+        </div>
+        @if (categories.Count > 0)
+        {
+            <div class="cm-search">
+                <label for="categorySearch" class="visually-hidden">Cerca categoria</label>
+                <span aria-hidden="true">⌕</span>
+                <input id="categorySearch" type="search" placeholder="Cerca per nome..." autocomplete="off" />
+            </div>
+        }
+    </div>
+
+    @if (categories.Count == 0)
+    {
+        <div class="cm-empty-state">
+            <div class="cm-empty-symbol" aria-hidden="true">▦</div>
+            <h3>Nessuna categoria presente</h3>
+            <p>Crea la prima categoria per iniziare a organizzare il catalogo.</p>
+            <a asp-action="Create" class="btn cm-btn-primary">Crea categoria</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table cm-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="ps-4">Categoria</th>
+                        <th scope="col">ID</th>
+                        <th scope="col" class="text-end pe-4">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in categories)
+                    {
+                        <tr data-category-row data-category-name="@category.Name">
+                            <td class="ps-4">
+                                <div class="cm-table-name">
+                                    <span class="cm-avatar" aria-hidden="true">@(category.Name.Length > 0 ? category.Name.Substring(0, 1).ToUpperInvariant() : "?")</span>
+                                    <span class="fw-semibold">@category.Name</span>
+                                </div>
+                            </td>
+                            <td><span class="cm-id">#@category.Id</span></td>
+                            <td class="text-end pe-4">
+                                <div class="cm-table-actions">
+                                    <a asp-action="Details" asp-route-id="@category.Id" class="cm-text-link">Dettagli</a>
+                                    <a asp-action="Edit" asp-route-id="@category.Id" class="cm-text-link">Modifica</a>
+                                    <a asp-action="Delete" asp-route-id="@category.Id" class="cm-text-link cm-text-danger">Elimina</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="categorySearchEmpty" class="cm-search-empty d-none" role="status">Nessuna categoria corrisponde alla ricerca.</div>
+        <div class="cm-table-footer">@categories.Count categorie nell'elenco</div>
+    }
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+            const search = document.getElementById('categorySearch');
+            if (!search) return;
+
+            const rows = Array.from(document.querySelectorAll('[data-category-row]'));
+            const empty = document.getElementById('categorySearchEmpty');
+
+            search.addEventListener('input', () => {
+                const text = search.value.trim().toLocaleLowerCase('it');
+                let visible = 0;
+
+                for (const row of rows) {
+                    const match = row.dataset.categoryName.toLocaleLowerCase('it').includes(text);
+                    row.hidden = !match;
+                    if (match) visible++;
+                }
+
+                empty.classList.toggle('d-none', visible !== 0);
+            });
+        })();
+    </script>
+}

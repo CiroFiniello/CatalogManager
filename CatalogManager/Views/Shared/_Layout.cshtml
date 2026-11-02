@@ -1,50 +1,101 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+@{
+    var isOverview = Context.Request.Path.Value == "/" ||
+                     Context.Request.Path.StartsWithSegments("/Home");
+    var isCategories = Context.Request.Path.StartsWithSegments("/Categories");
+}
+<!DOCTYPE html>
+<html lang="it">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CatalogManager</title>
-    <script type="importmap"></script>
+    <meta name="theme-color" content="#101c36" />
+    <title>@ViewData["Title"] · CatalogManager</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CatalogManager.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/catalogmanager.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CatalogManager</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="cm-shell">
+        <aside class="cm-sidebar offcanvas-lg offcanvas-start"
+               tabindex="-1"
+               id="cmSidebar"
+               aria-labelledby="cmBrand">
+            <div class="cm-sidebar-inner">
+                <div class="cm-brand-row">
+                    <a id="cmBrand" class="cm-brand" asp-controller="Home" asp-action="Index">
+                        <span class="cm-brand-symbol">CM</span>
+                        <span class="cm-brand-copy">
+                            <strong>CatalogManager</strong>
+                            <small>Catalog operations</small>
+                        </span>
+                    </a>
+                    <button type="button" class="btn-close btn-close-white d-lg-none"
+                            data-bs-dismiss="offcanvas" data-bs-target="#cmSidebar"
+                            aria-label="Chiudi menu"></button>
+                </div>
+
+                <div class="cm-nav-caption">WORKSPACE</div>
+                <nav class="cm-nav" aria-label="Navigazione principale">
+                    <a asp-controller="Home" asp-action="Index"
+                       class="cm-nav-link @(isOverview ? "is-active" : "")"
+                       aria-current="@(isOverview ? "page" : null)">
+                        <span class="cm-nav-number">01</span>
+                        <span>Panoramica</span>
+                    </a>
+                    <a asp-controller="Categories" asp-action="Index"
+                       class="cm-nav-link @(isCategories ? "is-active" : "")"
+                       aria-current="@(isCategories ? "page" : null)">
+                        <span class="cm-nav-number">02</span>
+                        <span>Categorie</span>
+                    </a>
+                    <span class="cm-nav-link cm-nav-disabled" aria-disabled="true">
+                        <span class="cm-nav-number">03</span>
+                        <span>Prodotti</span>
+                        <span class="cm-soon">Presto</span>
+                    </span>
+                    <span class="cm-nav-link cm-nav-disabled" aria-disabled="true">
+                        <span class="cm-nav-number">04</span>
+                        <span>Fornitori</span>
+                        <span class="cm-soon">Presto</span>
+                    </span>
+                </nav>
+
+                <div class="cm-sidebar-bottom">
+                    <div class="cm-sidebar-note">
+                        <span class="cm-sidebar-note-dot"></span>
+                        <div>
+                            <strong>Progetto 03 / 13</strong>
+                            <small>ASP.NET Core MVC · EF Core</small>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </aside>
+
+        <div class="cm-workspace">
+            <header class="cm-topbar">
+                <div class="cm-topbar-left">
+                    <button type="button" class="cm-menu-btn d-lg-none"
+                            data-bs-toggle="offcanvas" data-bs-target="#cmSidebar"
+                            aria-controls="cmSidebar" aria-label="Apri menu">☰</button>
+                    <span class="cm-topbar-path">Workspace <span>/</span> @ViewData["Title"]</span>
+                </div>
+                <div class="cm-topbar-right">
+                    <span class="cm-environment"><span class="cm-environment-dot"></span> Progetto locale</span>
+                </div>
+            </header>
+
+            <main class="cm-content" id="main-content">
+                @RenderBody()
+            </main>
+
+            <footer class="cm-footer">
+                <span>CatalogManager · Prototipo gestionale</span>
+                <span>C# / ASP.NET Core MVC</span>
+            </footer>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CatalogManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

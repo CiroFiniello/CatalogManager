@@ -1,0 +1,53 @@
+@model CatalogManager.Models.Category
+
+@{
+    ViewData["Title"] = "Modifica categoria";
+}
+
+<section class="cm-page-heading">
+    <a asp-action="Index" class="cm-back-link">← Torna alle categorie</a>
+    <span class="cm-eyebrow">CATALOGO / CATEGORIE / MODIFICA</span>
+    <h1>Modifica categoria</h1>
+    <p>Aggiorna il nome della categoria selezionata.</p>
+</section>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-7">
+        <section class="cm-panel cm-form-panel">
+            <div class="cm-panel-header">
+                <div>
+                    <h2>Informazioni categoria</h2>
+                    <p>Stai modificando la categoria <strong>#@Model.Id</strong>.</p>
+                </div>
+            </div>
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                <div class="mb-4">
+                    <label asp-for="Name" class="form-label cm-field-label">Nome categoria</label>
+                    <input asp-for="Name" class="form-control cm-control" maxlength="100" autocomplete="off" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                    <div class="cm-field-help">Il nuovo nome verrà utilizzato per la categoria esistente.</div>
+                </div>
+                <div class="cm-form-actions cm-form-actions-between">
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn cm-btn-danger-outline">Elimina categoria</a>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Index" class="btn cm-btn-secondary">Annulla</a>
+                        <button type="submit" class="btn cm-btn-primary">Salva modifiche</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-12 col-xl-5">
+        <aside class="cm-tip-card">
+            <span class="cm-tip-icon" aria-hidden="true">i</span>
+            <h2>Modifica sicura</h2>
+            <p class="mb-0">Stai modificando il nome della categoria, non il suo ID. Le associazioni ai prodotti restano riferite alla stessa categoria.</p>
+        </aside>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

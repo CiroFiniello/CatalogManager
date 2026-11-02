@@ -1,0 +1,40 @@
+@model CatalogManager.Models.Category
+
+@{
+    ViewData["Title"] = "Dettaglio categoria";
+}
+
+<section class="cm-page-heading cm-page-heading-actions">
+    <div>
+        <a asp-action="Index" class="cm-back-link">← Torna alle categorie</a>
+        <span class="cm-eyebrow">CATALOGO / CATEGORIE / DETTAGLIO</span>
+        <h1>@Model.Name</h1>
+        <p>Informazioni registrate per questa categoria.</p>
+    </div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn cm-btn-primary">Modifica categoria</a>
+</section>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-7">
+        <section class="cm-panel cm-detail-panel">
+            <div class="cm-panel-header">
+                <div><h2>Dettagli categoria</h2><p>Valori attualmente salvati nel database.</p></div>
+            </div>
+            <dl class="cm-detail-list">
+                <div><dt>Nome</dt><dd>@Model.Name</dd></div>
+                <div><dt>Identificativo</dt><dd>#@Model.Id</dd></div>
+            </dl>
+            <div class="cm-form-actions cm-form-actions-between">
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn cm-btn-danger-outline">Elimina categoria</a>
+                <a asp-action="Index" class="btn cm-btn-secondary">Torna all'elenco</a>
+            </div>
+        </section>
+    </div>
+    <div class="col-12 col-xl-5">
+        <aside class="cm-tip-card">
+            <span class="cm-tip-icon" aria-hidden="true">i</span>
+            <h2>Prodotti collegati</h2>
+            <p class="mb-0">L'elenco dei prodotti di questa categoria sarà disponibile quando realizzeremo la gestione Prodotti. Non mostriamo un conteggio perché il controller attuale non carica quella relazione.</p>
+        </aside>
+    </div>
+</div>

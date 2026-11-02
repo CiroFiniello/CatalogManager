@@ -1,0 +1,41 @@
+@model CatalogManager.Models.Category
+
+@{
+    ViewData["Title"] = "Elimina categoria";
+}
+
+<section class="cm-page-heading">
+    <a asp-action="Index" class="cm-back-link">← Torna alle categorie</a>
+    <span class="cm-eyebrow">CATALOGO / CATEGORIE / ELIMINA</span>
+    <h1>Elimina categoria</h1>
+    <p>Verifica la categoria prima di confermare l'operazione.</p>
+</section>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-7">
+        <section class="cm-panel cm-detail-panel">
+            <div class="cm-danger-message">
+                <strong>Confermi l'eliminazione?</strong>
+                <p>Stai per richiedere l'eliminazione di questa categoria. L'operazione non può essere annullata dalla pagina.</p>
+            </div>
+            <dl class="cm-detail-list">
+                <div><dt>Nome categoria</dt><dd>@Model.Name</dd></div>
+                <div><dt>Identificativo</dt><dd>#@Model.Id</dd></div>
+            </dl>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="cm-form-actions">
+                    <a asp-action="Index" class="btn cm-btn-secondary">Annulla</a>
+                    <button type="submit" class="btn cm-btn-danger">Conferma eliminazione</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-12 col-xl-5">
+        <aside class="cm-tip-card">
+            <span class="cm-tip-icon" aria-hidden="true">!</span>
+            <h2>Attenzione alle relazioni</h2>
+            <p class="mb-0">Se la categoria è collegata a prodotti, il comportamento dipende dal vincolo di cancellazione configurato nel database. Il controllo applicativo verrà completato insieme alla CRUD Prodotti.</p>
+        </aside>
+    </div>
+</div>
